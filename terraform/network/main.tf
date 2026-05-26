@@ -28,3 +28,29 @@ resource "azurerm_subnet" "pg_subnet" {
     }
   }
 }
+
+# 4. PostgreSQL Flexible Server
+resource "azurerm_postgresql_flexible_server" "postgres" {
+
+  name                = "psql-flex-prod-demo"
+
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
+
+  version             = "16"
+
+  delegated_subnet_id = azurerm_subnet.pg_subnet.id
+
+  administrator_login    = "pgadmin"
+  administrator_password = "ChangeThisPassword123!"
+
+  storage_mb = 32768
+
+  sku_name = "B_Standard_B1ms"
+
+  zone = "1"
+
+  backup_retention_days = 7
+
+  public_network_access_enabled = false
+}
